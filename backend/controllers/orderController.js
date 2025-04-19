@@ -15,9 +15,9 @@ const addOrderItems = asyncHandler(async (req, res) => {
         totalPrice,
     } = req.body;
 
-    if (orderItems && orderItems.lenght === 0) {
+    if (orderItems && orderItems.length === 0) {
         res.status(400);
-        throw new error('No order items');
+        throw new Error('No order items');
     } else {
         const order = new Order ({
             orderItems: orderItems.map((x) => ({
@@ -89,15 +89,58 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 // @desc Update order to delivered
 // @route PUT /api/orders/:id/deliver
 // @access Private/Admin
+
 const updateOrderToDelivered = asyncHandler(async (req, res) => {
-    res.send('update order to delivered');
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+        order.isDelivered = true;
+        order.deliveredAt = Date.now();
+
+        const updatedOrder = await order.save();
+
+        res.status(200).json(updatedOrder);
+    } else {
+        res.status(404);
+        throw new Error('Order not found');
+    }
 });
+
+
+// @desc Update order to delivered
+// @route PUT /api/orders/:id/deliver
+// @access Private/Admin
+// const deliverOrderHandler = async () => {
+//     try {
+//         const token = userInfo.token;
+//         // Usa la URL completa del servidor backend
+//         const response = await fetch(`http://localhost:5000/api/orders/${orderId}/deliver`, {
+//             method: 'PUT',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'Authorization': `Bearer ${token}`
+//             }
+//         });
+        
+//         if (!response.ok) {
+//             const errorData = await response.json().catch(() => ({}));
+//             throw new Error(errorData.message || 'Failed to mark as delivered');
+//         }
+        
+//         // Forzar recarga de la página
+//         window.location.reload();
+//     } catch (err) {
+//         console.error('Error al marcar como entregado:', err);
+//         toast.error(err.message);
+//     }
+// };
 
 // @desc Get all orders
 // @route GET /api/orders
 // @access Private/Admin
 const getOrders = asyncHandler(async (req, res) => {
-    res.send('get all orders');
+    const orders= await Order.find({}).populate('user', 'id name');
+    res.status(200).json(orders);
 });
 
 export {
