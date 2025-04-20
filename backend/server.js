@@ -10,9 +10,11 @@ import userRoutes from "./routes/userRoutes.js"
 import orderRoutes from './routes/orderRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js'
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
+import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+// const __dirname = path.resolve();
 
 const port = process.env.PORT || 5000;
 
@@ -46,7 +48,7 @@ app.get('/api/config/paypal', (req, res) =>
 );
 
 // const __dirname = path.resolve();
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.use(notFound);
 app.use(errorHandler);

@@ -27,7 +27,7 @@ function ProductEditScreen() {
 
     const [updateProduct, { isLoading: loadingUpdate }] = useUpdateProductMutation();
 
-    const [uploadProductImage, { isLoading: loadingUoload }] = useUploadProductImageMutation();
+    const [uploadProductImage, { isLoading: loadingUpload }] = useUploadProductImageMutation();
 
     const navigate = useNavigate();
 
@@ -136,6 +136,8 @@ function ProductEditScreen() {
                             onChange={(e) => setBrand(e.target.value)}
                         ></FormControl>
                     </Form.Group>
+
+                    {loadingUpload && <Loader />}
 
                     <Form.Group controlId='countInStock' className="my-2">
                         <Form.Label>countInStock</Form.Label>

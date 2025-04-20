@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useLogoutMutation } from '../slices/usersApiSlice';
 import { logout } from '../slices/authSlice'
 import logo from '../assets/logo.png';
+import SearchBox from './SearchBox';
 
 const Header = () => {
 
@@ -38,6 +39,7 @@ const Header = () => {
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='ms-auto'>
+              <SearchBox />
               <Link to='/cart' className='nav-link'>
                 <FaShoppingCart /> Cart
                 {cartItems.length > 0 && (
