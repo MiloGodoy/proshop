@@ -11,7 +11,7 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "data:import": "node backend/seeder",
     "data:destroy": "node backend/seeder -d",
-    "build": "npm install && cd frontend && npm install && npx vite build && cd .."
+    "build": "npm install && cd frontend && npm install --legacy-peer-deps && npm run build && cd .."
   },
   "repository": {
     "type": "git",
