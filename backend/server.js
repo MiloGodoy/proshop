@@ -1,16 +1,25 @@
+import dotenv from "dotenv";
 import path from 'path'
 import express from "express";
 import cors from 'cors';
-import dotenv from "dotenv";
-dotenv.config();
 import cookieParser from 'cookie-parser'
+import { fileURLToPath } from 'node:url';
+
+// Cargar variables de entorno
+dotenv.config()
+
+console.log('Verificación de variables PayPal:', {
+  clientId: process.env.PAYPAL_CLIENT_ID ? 'OK' : 'Falta',
+  secret: process.env.PAYPAL_APP_SECRET ? 'OK' : 'Falta',
+  apiUrl: process.env.PAYPAL_API_URL || 'Usando valor por defecto'
+});
+
 import connectDB from "./config/db.js";
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js"
 import orderRoutes from './routes/orderRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js'
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
-import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,9 +28,23 @@ const __dirname = path.dirname(__filename);
 // Obtener el directorio raíz del proyecto (un nivel arriba de backend)
 const rootDir = path.resolve(__dirname, "..")
 
-// Cargar variables de entorno
-dotenv.config()
+// Importa los módulos de PayPal después de configurar dotenv
+const { getPayPalAccessToken } = await import('./utils/paypal.js');
 
+// Prueba inmediata (opcional)
+async function testPayPalConnection() {
+  try {
+    console.log('Probando conexión con PayPal...');
+    const token = await getPayPalAccessToken();
+    console.log('✅ Conexión exitosa con PayPal. Token obtenido.');
+    return true;
+  } catch (error) {
+    console.error('❌ Fallo en conexión PayPal:', error.message);
+    return false;
+  }
+}
+
+testPayPalConnection();
 
 const port = process.env.PORT || 5000;
 
