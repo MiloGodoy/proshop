@@ -36,6 +36,7 @@
   "devDependencies": {
     "concurrently": "^9.1.0",
     "dotenv": "^16.4.7",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "vite": "^6.3.2"
   }
 }
